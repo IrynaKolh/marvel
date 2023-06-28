@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marvel App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-container">
+      <div class="logo">
+        <img src="assets/marvel.svg" alt="logo" height="40px">
+      </div>   
+      <nav class="navigation__menu">
+        <ul class="navigation__list">
+            <li class="navigation-item" data-query="characters">Characters</li>
+            <li class="navigation-item" data-query="comics">Comics</li>
+            <li class="navigation-item" data-query="creators">Creators</li>
+            <li class="navigation-item" data-query="events">Events</li>
+            <li class="navigation-item" data-query="series">Series</li>
+            <li class="navigation-item" data-query="stories">Stories</li>
+        </ul>
+      </nav>
+    </div>    
+  </header>
+  <main class="main">
+    <div class="container">
+      <h1 class="h1-title" id="title"></h1>
+      <div class="pagination">
+
+      </div>
+      <div class="content-container" id="cards-container"></div>
+    </div>
+  </main>
+  <footer class="footer">
+    <!-- <p>Iryna Kolhanova</p> -->
+  </footer>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
