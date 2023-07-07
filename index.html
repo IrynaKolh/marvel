@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Marvel App</title>
+  <link rel="icon" href="./assets/marvel.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -31,8 +32,26 @@
   <main class="main">
     <div class="container">
       <h1 class="h1-title" id="title"></h1>
-      <div class="pagination">
-
+      <div class="options-container">
+        <div class="items-per-page">
+          <p>Cards per page: </p>
+          <button class="items-per-page-btn" data-pages="20" role="button">20</button>
+          <button class="items-per-page-btn" data-pages="50" role="button">50</button>
+          <button class="items-per-page-btn" data-pages="100" role="button">100</button>
+        </div>
+        <div class="pagination">
+          <ul class="pagination-btns">
+            <li><button class="pagination-btn start-btn not-active-btn" disabled>First</button></li>
+            <li><button class="pagination-btn prev-btn not-active-btn" disabled><<</button></li>
+            <li><button class="pagination-btn current-btn">1</button></li>
+            <li><button class="pagination-btn next-btn active-btn">>></button></li>
+            <li><button class="pagination-btn end-btn active-btn">Last</button></li>
+          </ul>
+        </div>
+        <div class="search">
+          <input class="search-input" type="text">
+          <button class="search-btn">Search</button>
+        </div>
       </div>
       <div class="content-container" id="cards-container"></div>
     </div>
