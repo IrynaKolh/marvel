@@ -1,6 +1,6 @@
 const BASE_URL = "https://gateway.marvel.com:443/v1/public/";
-const API_KEY = "";
-const PRIV_KEY = "";
+const API_KEY = "add the API_KEY here";  //TODO: add the API_KEY and PRIV_KEY here!
+const PRIV_KEY = "add the PRIV_KEY here";
 
 const navList = document.querySelectorAll('.navigation-item');
 const container = document.getElementById('cards-container');
@@ -12,12 +12,16 @@ const currentBtn = document.querySelector('.current-btn')
 const nextBtn = document.querySelector('.next-btn');
 const endBtn = document.querySelector('.end-btn');
 const perPages = document.querySelectorAll('.items-per-page-btn');
+const searchBtn = document.querySelector('.search-btn');
+const input = document.querySelector('.search-input');
 
 
 const requestData = {
   query: "characters",
   limit: 20,
-  offset: 0
+  offset: 0,
+  searchQuery: '',
+  search: '',
 };
 
 const responseData = {
@@ -26,11 +30,7 @@ const responseData = {
   numberPage: 1,
 };
 
-// let numberPage = 1;
-// let activePage = 1;
-// let amountPages;
-
-const setStartValues = (limit) => {
+const setStartValues = (limit, query) => {
   currentBtn.innerHTML = 1;
   responseData.numberPage = 1;
   startBtn.removeEventListener('click', moveLeftMax);
@@ -54,18 +54,47 @@ const setStartValues = (limit) => {
     if(btn.dataset.pages === limit) {
       btn.classList.add('active');
     }
-  })  
+  }) 
   requestData.limit = limit;
   requestData.offset= 0;
+  requestData.searchQuery = '';
   responseData.amountPages = null;
 }
 
+function checkTotal() {
+  if (responseData.total <= requestData.limit) {
+    nextBtn.removeEventListener('click', moveRight);
+    endBtn.removeEventListener('click', moveRightMax);
+    nextBtn.setAttribute('disabled', true);
+    nextBtn.classList.remove('active-btn');
+    nextBtn.classList.add('not-active-btn');
+    endBtn.setAttribute('disabled', true);
+    endBtn.classList.remove('active-btn');
+    endBtn.classList.add('not-active-btn');
+  }
+}
+
 const getDataFromAPI = async (requestData) => {
-  const {query, limit, offset} = requestData;
+  const {query, limit, offset, searchQuery} = requestData;
   try {
     let ts = new Date().getTime();
     let hash = CryptoJS.MD5(ts + PRIV_KEY + API_KEY).toString();
-    const url = `${BASE_URL}${query}?ts=${ts}&apikey=${API_KEY}&hash=${hash}&limit=${limit}&offset=${offset}`;
+    let url;
+    
+    if (query === 'series' || query === 'comics') {
+      requestData.search = 'titleStartsWith';
+    } else if (query=== 'characters' || query === 'creators' || query === 'events') {
+      requestData.search = 'nameStartsWith';
+    } else {
+      requestData.search = '';
+    }
+
+    if (searchQuery !== '') {
+      url = `${BASE_URL}${query}?ts=${ts}&apikey=${API_KEY}&hash=${hash}&limit=${limit}&offset=${offset}&${requestData.search}=${searchQuery}`;
+    } else {
+      url = `${BASE_URL}${query}?ts=${ts}&apikey=${API_KEY}&hash=${hash}&limit=${limit}&offset=${offset}`;
+    }
+     
     const res = await fetch(url);
     const response = await res.json();
     return response;
@@ -189,6 +218,11 @@ async function moveLeftMax() {
 
 const createCardsList = (response) => {
   container.innerHTML = '';
+  if (response.data.total === 0) {
+    container.innerHTML = `
+    <h1>No result!</h1>
+    `
+  }
   title.textContent = requestData.query;    
   response.data.results.forEach((item) => {
     let name = item.name;
@@ -213,9 +247,16 @@ async function handleResponse(event) {
     button.classList.remove('active');
   })
   this.classList.add('active');
-
-  setStartValues(20);  
-  requestData.query = event.target.dataset.query;    
+  setStartValues(20, event.target.dataset.query); 
+  if (event.target.dataset.query === 'stories') {
+    searchBtn.setAttribute('disabled', true);
+    input.setAttribute('disabled', true);
+  } else {
+    searchBtn.removeAttribute('disabled', true);
+    input.removeAttribute('disabled', true);
+  }
+  perPages[0].classList.add('active');
+  requestData.query = event.target.dataset.query;
   reloadData();
 }
 
@@ -227,22 +268,34 @@ async function setLimitPerPage(event) {
   
   requestData.limit = event.target.dataset.pages;
   requestData.offset = event.target.dataset.pages;
-  setStartValues(requestData.limit);  
+  setStartValues(requestData.limit, requestData.query);  
   reloadData(); 
 }
 
 async function reloadData() {
   const response = await getDataFromAPI(requestData);
   responseData.total = response.data.total;
-  responseData.amountPages = Math.round(response.data.total / requestData.limit);
-  console.log(responseData);
+  responseData.amountPages = Math.ceil(response.data.total / requestData.limit);
+  checkTotal();
   createCardsList(response);
+}
+
+async function setSearchQuery() {
+  requestData.limit = 20;
+  requestData.offset = 0;
+  setStartValues(requestData.limit, requestData.query);
+  perPages[0].classList.add('active');
+  requestData.searchQuery = input.value;
+  reloadData();
+  input.value = '';  
 }
 
 startBtn.addEventListener('click', moveLeftMax);
 prevBtn.addEventListener('click', moveLeft);
 nextBtn.addEventListener('click', moveRight);
 endBtn.addEventListener('click', moveRightMax);
+
+searchBtn.addEventListener('click', setSearchQuery);
 
 window.onload = async () => {
 reloadData();

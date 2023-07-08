@@ -93,8 +93,8 @@ html {
 .content-card-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;  
-  margin: 0 1rem;
+  justify-content: space-between; 
+  margin: 1rem;
 }
 
 .card-name {
@@ -102,7 +102,7 @@ html {
   font-size: x-large;
   color: #fff;
   text-shadow: 2px 2px 3px hsla(0, 100%, 50%, 0.3);
-  margin: 10px 0;
+  margin: 10px 0; 
 }
 
 .card-description {
@@ -110,6 +110,10 @@ html {
   font-size: 1.2rem;
   text-indent: 1rem;
   margin: 5px;
+  max-height: 120px;
+  width: 300px;
+  overflow: scroll;
+  padding: 10px 15px;  
 }
 
 .options-container{
@@ -148,6 +152,11 @@ html {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+}
+
+.search-btn:disabled {
+  background-color: gray;
+  cursor: none;
 }
 
 .items-per-page-btn:focus, .search-btn:focus {
