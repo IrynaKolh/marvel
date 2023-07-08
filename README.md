@@ -11,3 +11,6 @@ Instruction:
    - Choose a different limit cards per page
 4. Worting pagination
 5. Worting search (name or title) in different API requests. The API does not offer searching in STORIES, this option is disabled in application.
+
+
+# DEPLOY [marvel-kolh.netlify.app](https://marvel-kolh.netlify.app/)https://marvel-kolh.netlify.app/
