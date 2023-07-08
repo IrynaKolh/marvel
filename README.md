@@ -9,8 +9,8 @@ Instruction:
 3. By default fetch CHARACTERS from API with limit 20 cards per page, but you can:
    - Choose a different navigation buttons for fetching data from API.
    - Choose a different limit cards per page
-4. Worting pagination
-5. Worting search (name or title) in different API requests. The API does not offer searching in STORIES, this option is disabled in application.
+4. Working pagination
+5. Working search (name or title) in different API requests. The API does not offer searching in STORIES, this option is disabled in application.
 
 
-# DEPLOY [marvel-kolh.netlify.app](https://marvel-kolh.netlify.app/)https://marvel-kolh.netlify.app/
+# [DEPLOY](https://marvel-kolh.netlify.app/)
